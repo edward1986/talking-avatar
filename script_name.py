@@ -67,13 +67,13 @@ def create_talking_head(audio_file, image_file):
         f"--face {image_file} --audio {audio_file} --outfile {video_output}"
     )
     try:
-        subprocess.run(command, shell=True, check=True, stderr=subprocess.PIPE)
+        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
         print(f"Generated video: {video_output}")
+        print(f"Command Output: {result.stdout}")
     except subprocess.CalledProcessError as e:
-        print(f"Error generating talking head video: {e}\nCommand: {e.cmd}\nReturn Code: {e.returncode}")
+        print(f"Error generating video:\nCommand: {e.cmd}\nReturn Code: {e.returncode}\nOutput: {e.stderr}")
         raise
     return video_output
-
 
 def combine_audio_video(video_file, audio_file, output_file):
     command = f"ffmpeg -i {video_file} -i {audio_file} -c:v copy -c:a aac {output_file}"
