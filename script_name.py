@@ -81,7 +81,7 @@ def combine_all_videos(turn, video_files, audio_files, roles):
 def podcast_simulation():
     check_files_exist()
 
-    roles = ["host_a", "host_b", "guest_ai"]
+    roles = ["host_a", "host_b", "guest"]
     static_responses = STATIC_RESPONSES
 
     for turn in range(TURN_LIMIT):
