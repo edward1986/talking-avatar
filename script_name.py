@@ -25,10 +25,19 @@ roles = {
 # Generate a response using Hugging Face models
 def generate_response(model, tokenizer, prompt):
     """Generate a response using the Hugging Face model."""
-    inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512)
-    outputs = model.generate(inputs.input_ids, max_length=150, num_return_sequences=1, do_sample=True)
+    inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512, padding=True)
+    input_length = inputs.input_ids.shape[1]
+    max_length = input_length + 50  # Allow 50 additional tokens for the output
+    
+    outputs = model.generate(
+        inputs.input_ids,
+        attention_mask=inputs.attention_mask,
+        max_length=max_length,
+        num_return_sequences=1,
+        do_sample=True,
+        pad_token_id=tokenizer.eos_token_id,
+    )
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
-
 # Function to simulate sending a message to an AI agent
 def send_message(agent, context, role_prompt):
     """Generate a response locally using Hugging Face models."""
