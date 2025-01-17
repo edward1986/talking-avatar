@@ -1,0 +1,7 @@
+transformers
+pyttsx3
+torch
+numpy
+numba==0.48
+opencv-python
+ffmpeg-python
