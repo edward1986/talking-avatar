@@ -2,7 +2,7 @@ import subprocess
 import os
 import pyttsx3
 from transformers import AutoModelForCausalLM, AutoTokenizer
-
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 # Load AI models and tokenizers
 def load_model_and_tokenizer(model_name):
     """Load a Hugging Face model and tokenizer."""
