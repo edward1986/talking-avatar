@@ -66,32 +66,27 @@ def combine_audio_video(video_file, audio_file, output_file):
 def podcast_simulation():
     check_files_exist()
 
+    roles = ["host_a", "host_b", "guest_ai"]
+    static_responses = STATIC_RESPONSES
+
     for turn in range(TURN_LIMIT):
-        # Host A speaks
-        response_a = STATIC_RESPONSES["host_a"][turn]
-        print(f"Host A: {response_a}")
-        audio_a = f"response_a_{turn}.mp3"
-        text_to_speech(response_a, audio_a)
-        video_a = create_talking_head(audio_a, "host_a_avatar.png")
+        video_files = {}
+        audio_files = {}
 
-        # Host B responds
-        response_b = STATIC_RESPONSES["host_b"][turn]
-        print(f"Host B: {response_b}")
-        audio_b = f"response_b_{turn}.mp3"
-        text_to_speech(response_b, audio_b)
-        video_b = create_talking_head(audio_b, "host_b_avatar.png")
+        for role in roles:
+            response = static_responses[role][turn]
+            print(f"{role.capitalize()}: {response}")
+            audio_file = f"response_{role}_{turn}.mp3"
+            video_file = f"response_{role}_{turn}_video.mp4"
 
-        # Guest AI adds commentary
-        response_guest = STATIC_RESPONSES["guest_ai"][turn]
-        print(f"Guest AI: {response_guest}")
-        audio_guest = f"response_guest_{turn}.mp3"
-        text_to_speech(response_guest, audio_guest)
-        video_guest = create_talking_head(audio_guest, "guest_avatar.png")
+            text_to_speech(response, audio_file)
+            video_file = create_talking_head(audio_file, f"{role}_avatar.png")
 
-        # Combine outputs for this turn
-        combine_audio_video(video_a, audio_a, f"final_host_a_{turn}.mp4")
-        combine_audio_video(video_b, audio_b, f"final_host_b_{turn}.mp4")
-        combine_audio_video(video_guest, audio_guest, f"final_guest_{turn}.mp4")
+            video_files[role] = video_file
+            audio_files[role] = audio_file
+
+        # Combine videos for all roles
+        combine_all_videos(turn, video_files, audio_files, roles)
 
     print("Podcast simulation complete with visuals and speech!")
 
