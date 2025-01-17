@@ -4,6 +4,20 @@ import pyttsx3
 from transformers import AutoModelForCausalLM, AutoTokenizer
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 # Load AI models and tokenizers
+def check_files_exist():
+    required_files = [
+        "Wav2Lip/checkpoints/wav2lip_gan.pth",
+        "host_a_avatar.png",
+        "host_b_avatar.png",
+        "guest_avatar.png",
+    ]
+    for file in required_files:
+        if not os.path.exists(file):
+            raise FileNotFoundError(f"Required file not found: {file}")
+    print("All required files are available.")
+
+# Call this function at the start of the script
+check_files_exist()
 def load_model_and_tokenizer(model_name):
     """Load a Hugging Face model and tokenizer."""
     tokenizer = AutoTokenizer.from_pretrained(model_name)
