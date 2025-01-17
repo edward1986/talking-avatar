@@ -1,0 +1,29 @@
+name: Run Podcast Simulation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-simulation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.8"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install transformers pyttsx3
+        pip install -r requirements.txt  # Assuming requirements.txt includes Wav2Lip dependencies
+
+    - name: Run podcast simulation
+      run: python script_name.py  # Replace with the actual script name
