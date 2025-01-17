@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.9"
+        python-version: "3.8"
 
     # Step 3: Upgrade pip, setuptools, and wheel
     - name: Upgrade pip, setuptools, and wheel
@@ -30,17 +30,21 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt update
-        sudo apt install -y build-essential python3-dev ffmpeg espeak-ng llvm-dev libomp-dev
+        sudo apt install -y build-essential python3-dev ffmpeg espeak-ng
 
     # Step 5: Install Python dependencies
-    - name: Install Python dependencies
+    - name: Install dependencies
       run: |
         pip install numpy --only-binary=:all:
         pip install librosa --only-binary=:all:
         pip install numba llvmlite --only-binary=:all:
         pip install -r requirements.txt
 
-    # Step 6: Clone Wav2Lip Repository
+    # Step 6: Install batch_face
+    - name: Install batch_face
+      run: pip install git+https://github.com/elliottzheng/batch-face.git
+
+    # Step 7: Clone Wav2Lip Repository
     - name: Clone Wav2Lip
       run: |
         git clone https://github.com/justinjohn0306/Wav2Lip
@@ -48,16 +52,16 @@ jobs:
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip.pth' -O 'checkpoints/wav2lip.pth'
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth' -O 'checkpoints/wav2lip_gan.pth'
 
-    # Step 7: Test Wav2Lip Inference
-    - name: Test Wav2Lip Inference
+    # Step 8: Run Wav2Lip Script
+    - name: Run Wav2Lip Script
       run: |
         cd Wav2Lip
         python inference.py --checkpoint_path checkpoints/wav2lip_gan.pth \
         --face test_image.jpg --audio test_audio.mp3 --outfile output_talking_head.mp4
 
-    # Step 8: Run your script
+    # Step 9: Run Podcast Simulation
     - name: Run podcast simulation
-      run: python script_name.py 
+      run: python script_name.py  # Replace with your actual script name
 
     # Step 10: Configure Git
     - name: Configure Git
