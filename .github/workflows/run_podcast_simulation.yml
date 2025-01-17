@@ -47,7 +47,6 @@ jobs:
     - name: Clone Wav2Lip
       run: |
         git clone https://github.com/justinjohn0306/Wav2Lip
-        pip install -r Wav2Lip/requirements.txt
         cd Wav2Lip
         mkdir -p checkpoints
         wget -O checkpoints/mobilenet.pth https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth
