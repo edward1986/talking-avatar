@@ -49,7 +49,7 @@ jobs:
         git clone https://github.com/justinjohn0306/Wav2Lip
         cd Wav2Lip
         mkdir -p checkpoints
-        wget 'https://github.com/elliottzheng/batch-face/releases/download/mobilenet/mobilenet.pth' -O 'checkpoints/mobilenet.pth'
+        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth' -O 'checkpoints/mobilenet.pth'
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip.pth' -O 'checkpoints/wav2lip.pth'
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth' -O 'checkpoints/wav2lip_gan.pth'
         
