@@ -2,6 +2,7 @@ transformers
 pyttsx3
 torch
 numpy
-numba==0.48
+numba>=0.56
+llvmlite>=0.37
 opencv-python
 ffmpeg-python
