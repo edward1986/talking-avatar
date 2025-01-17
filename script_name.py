@@ -62,27 +62,38 @@ def combine_audio_video(video_file, audio_file, output_file):
     command = f"ffmpeg -i {video_file} -i {audio_file} -c:v copy -c:a aac {output_file}"
     subprocess.run(command, shell=True, check=True)
     print(f"Output saved to {output_file}")
-def combine_all_videos(turn, video_files, audio_files, roles):
+def combine_all_videos_to_one(output_file, video_files):
     """
-    Combines videos and audio for all roles in a single step.
-
+    Combines all video files into a single output video.
+    
     Args:
-        turn (int): The current turn of the simulation.
-        video_files (dict): A dictionary with role keys and their corresponding video file paths.
-        audio_files (dict): A dictionary with role keys and their corresponding audio file paths.
-        roles (list): A list of role identifiers (e.g., ["host_a", "host_b", "guest_ai"]).
+        output_file (str): The name of the final combined video file.
+        video_files (list): List of video file paths to combine.
     """
-    for role in roles:
-        video_file = video_files[role]
-        audio_file = audio_files[role]
-        output_file = f"final_{role}_{turn}.mp4"
-        combine_audio_video(video_file, audio_file, output_file)
+    # Create a temporary file to list all video files
+    list_file = "video_list.txt"
+    with open(list_file, "w") as f:
+        for video in video_files:
+            f.write(f"file '{video}'\n")
+    
+    # Use FFmpeg to concatenate videos
+    command = f"ffmpeg -f concat -safe 0 -i {list_file} -c copy {output_file}"
+    try:
+        subprocess.run(command, shell=True, check=True)
+        print(f"Final combined video saved as: {output_file}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error combining videos:\nCommand: {e.cmd}\nReturn Code: {e.returncode}\nOutput: {e.stderr}")
+        raise
+    finally:
+        # Clean up the temporary list file
+        os.remove(list_file)
 
 def podcast_simulation():
     check_files_exist()
 
-    roles = ["host_a", "host_b", "guest"]
+    roles = ["host_a", "host_b", "guest_ai"]
     static_responses = STATIC_RESPONSES
+    all_videos = []
 
     for turn in range(TURN_LIMIT):
         video_files = {}
@@ -100,8 +111,11 @@ def podcast_simulation():
             video_files[role] = video_file
             audio_files[role] = audio_file
 
-        # Combine videos for all roles
-        combine_all_videos(turn, video_files, audio_files, roles)
+        # Add all individual videos for this turn to the master list
+        all_videos.extend(video_files.values())
+
+    # Combine all videos into a final output video
+    combine_all_videos_to_one("final_output.mp4", all_videos)
 
     print("Podcast simulation complete with visuals and speech!")
 
