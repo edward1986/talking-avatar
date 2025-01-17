@@ -32,7 +32,7 @@ jobs:
         sudo apt update
         sudo apt install -y build-essential python3-dev ffmpeg espeak-ng
 
-    # Step 5: Install PyTorch (if required)
+    # Step 5: Install PyTorch
     - name: Install PyTorch
       run: |
         pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
@@ -52,7 +52,7 @@ jobs:
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth' -O 'checkpoints/wav2lip_gan.pth'
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/resnet50.pth' -O 'checkpoints/resnet50.pth'
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth' -O 'checkpoints/mobilenet.pth'
-        a = pip install https://raw.githubusercontent.com/AwaleSajil/ghc/master/ghc-1.0-py3-none-any.whl
+        pip install https://raw.githubusercontent.com/AwaleSajil/ghc/master/ghc-1.0-py3-none-any.whl
         pip install git+https://github.com/elliottzheng/batch-face.git@master
         pip install ffmpeg-python mediapipe==0.10.18
 
@@ -66,15 +66,17 @@ jobs:
     - name: Run podcast simulation
       run: python script_name.py  # Replace with your actual script name
 
+    # Step 10: Configure Git
     - name: Configure Git
       run: |
         git config --global user.name "GitHub Actions Bot"
         git config --global user.email "actions@github.com"
 
+    # Step 11: Commit changes
     - name: Commit changes
       run: |
         git add .
         git commit -m "Update workflow and requirements"
         git push origin main
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
