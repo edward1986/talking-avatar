@@ -53,7 +53,7 @@ jobs:
     - name: Download Wav2Lip Model
       run: |
         mkdir -p Wav2Lip/checkpoints
-        wget -O Wav2Lip/checkpoints/wav2lip_gan.pth https://storage.googleapis.com/wav2lip/models/wav2lip_gan.pth
+        wget -O Wav2Lip/checkpoints/wav2lip_gan.pth https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth
 
     # Step 9: Run your script
     - name: Run podcast simulation
