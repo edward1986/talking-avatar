@@ -30,14 +30,14 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt update
-        sudo apt install -y build-essential python3-dev ffmpeg espeak-ng
+        sudo apt install -y build-essential python3-dev ffmpeg espeak-ng llvm-dev libomp-dev
 
     # Step 5: Install Python dependencies
-    - name: Install Python dependencies
+    - name: Install dependencies
       run: |
-        pip install librosa
         pip install numpy --only-binary=:all:
-        pip install -r requirements.txt
+        pip install librosa --only-binary=:all:
+        pip install -r requirements.txt --only-binary=:all:
 
     # Step 6: Clone Wav2Lip Repository
     - name: Clone Wav2Lip
@@ -46,11 +46,6 @@ jobs:
         cd Wav2Lip
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip.pth' -O 'checkpoints/wav2lip.pth'
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth' -O 'checkpoints/wav2lip_gan.pth'
-        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/resnet50.pth' -O 'checkpoints/resnet50.pth'
-        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth' -O 'checkpoints/mobilenet.pth'
-        pip install https://raw.githubusercontent.com/AwaleSajil/ghc/master/ghc-1.0-py3-none-any.whl
-        pip install git+https://github.com/elliottzheng/batch-face.git@master
-        pip install ffmpeg-python
 
     # Step 7: Test Wav2Lip Inference
     - name: Test Wav2Lip Inference
