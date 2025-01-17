@@ -52,8 +52,6 @@ jobs:
         wget -O checkpoints/mobilenet.pth https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth
         wget -O checkpoints/wav2lip.pth https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip.pth
         wget -O checkpoints/wav2lip_gan.pth https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth
-            
-
     # Step 9: Run Podcast Simulation
     - name: Run podcast simulation
       run: python script_name.py  # Replace with your actual script name
