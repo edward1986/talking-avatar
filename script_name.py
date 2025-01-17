@@ -7,6 +7,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 def check_files_exist():
     required_files = [
         "Wav2Lip/checkpoints/wav2lip_gan.pth",
+        "Wav2Lip/checkpoints/mobilenet.pth",
         "host_a_avatar.png",
         "host_b_avatar.png",
         "guest_avatar.png",
