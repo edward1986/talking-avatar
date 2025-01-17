@@ -48,7 +48,6 @@ jobs:
       run: |
         git clone https://github.com/Rudrabha/Wav2Lip.git
         cd Wav2Lip
-        pip install -r requirements.txt
 
     # Step 8: Download Wav2Lip Pretrained Model
     - name: Download Wav2Lip Model
