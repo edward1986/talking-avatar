@@ -25,7 +25,7 @@ STATIC_RESPONSES = {
         "I think AI is impressive, but sometimes it feels like it's taking over. Guest, what do you think?",
         "Ethics is a tricky topic. Do we trust AI to make fair decisions, or do humans need to stay in control?",
     ],
-    "guest_ai": [
+    "guest": [
         "AI has immense potential to improve lives, but we must be cautious about biases and misuse.",
         "AI is a tool. It amplifies human abilities, but we need to be mindful of how we use it.",
         "Regulating AI is essential. We need clear guidelines to ensure it benefits everyone without causing harm.",
