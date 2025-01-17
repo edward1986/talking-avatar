@@ -101,3 +101,5 @@ def podcast_simulation_with_visuals():
         turn += 1
 
     print("Podcast simulation complete with visuals and speech!")
+
+podcast_simulation_with_visuals()
