@@ -54,7 +54,7 @@ jobs:
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth' -O 'checkpoints/mobilenet.pth'
         pip install https://raw.githubusercontent.com/AwaleSajil/ghc/master/ghc-1.0-py3-none-any.whl
         pip install git+https://github.com/elliottzheng/batch-face.git@master
-        pip install ffmpeg-python mediapipe==0.10.18
+        pip install ffmpeg-python mediapipe
 
     # Step 8: Download Wav2Lip Pretrained Model
     - name: Download Wav2Lip Model
