@@ -49,10 +49,10 @@ jobs:
         git clone https://github.com/justinjohn0306/Wav2Lip
         cd Wav2Lip
         mkdir -p checkpoints
-        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth' -O 'checkpoints/mobilenet.pth'
-        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip.pth' -O 'checkpoints/wav2lip.pth'
-        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth' -O 'checkpoints/wav2lip_gan.pth'
-        
+        wget -O checkpoints/mobilenet.pth https://github.com/Rengokuu/RetinaFaceModel/releases/download/v1.0/mobilenet.pth
+        wget -O checkpoints/wav2lip.pth https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip.pth
+        wget -O checkpoints/wav2lip_gan.pth https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth
+            
 
     # Step 9: Run Podcast Simulation
     - name: Run podcast simulation
