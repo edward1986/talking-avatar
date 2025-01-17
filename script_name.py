@@ -20,7 +20,10 @@ MAX_NEW_TOKENS = 50  # Limit for generated tokens
 TURN_LIMIT = 3  # Number of conversation turns
 
 # Check required files
-
+def regenerate_audio(text, filename):
+    engine = pyttsx3.init()
+    engine.save_to_file(text, filename)
+    engine.runAndWait()
 def check_files_exist():
     for file in REQUIRED_FILES:
         if not os.path.exists(file):
