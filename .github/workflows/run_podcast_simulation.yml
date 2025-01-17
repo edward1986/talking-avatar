@@ -53,12 +53,6 @@ jobs:
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip.pth' -O 'checkpoints/wav2lip.pth'
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth' -O 'checkpoints/wav2lip_gan.pth'
         
-    # Step 8: Run Wav2Lip Script
-    - name: Run Wav2Lip Script
-      run: |
-        cd Wav2Lip
-        python inference.py --checkpoint_path checkpoints/wav2lip_gan.pth \
-        --face test_image.jpg --audio test_audio.mp3 --outfile output_talking_head.mp4
 
     # Step 9: Run Podcast Simulation
     - name: Run podcast simulation
