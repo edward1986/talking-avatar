@@ -66,11 +66,14 @@ def create_talking_head(audio_file, image_file):
         f"python Wav2Lip/inference.py --checkpoint_path Wav2Lip/checkpoints/wav2lip_gan.pth "
         f"--face {image_file} --audio {audio_file} --outfile {video_output}"
     )
-    subprocess.run(command, shell=True, check=True)
-    print(f"Generated video: {video_output}")
+    try:
+        subprocess.run(command, shell=True, check=True, stderr=subprocess.PIPE)
+        print(f"Generated video: {video_output}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error generating talking head video: {e}\nCommand: {e.cmd}\nReturn Code: {e.returncode}")
+        raise
     return video_output
 
-# Combine audio and video
 
 def combine_audio_video(video_file, audio_file, output_file):
     command = f"ffmpeg -i {video_file} -i {audio_file} -c:v copy -c:a aac {output_file}"
