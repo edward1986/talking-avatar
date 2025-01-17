@@ -21,32 +21,44 @@ jobs:
       with:
         python-version: "3.8"
 
-    # Step 3: Install dependencies
+    # Step 3: Upgrade pip, setuptools, and wheel
+    - name: Upgrade pip, setuptools, and wheel
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+
+    # Step 4: Install system dependencies
+    - name: Install system dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential python3-dev ffmpeg espeak-ng
+
+    # Step 5: Install PyTorch (if required)
+    - name: Install PyTorch
+      run: |
+        pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+    # Step 6: Install dependencies with precompiled wheels
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install transformers pyttsx3 torch gtts ffmpeg-python opencv-python
-        sudo apt update
-        sudo apt install -y ffmpeg espeak-ng
+        pip install numpy --only-binary=:all:
         pip install -r requirements.txt
 
-    # Step 4: Clone Wav2Lip Repository
+    # Step 7: Clone Wav2Lip Repository
     - name: Clone Wav2Lip
       run: |
         git clone https://github.com/Rudrabha/Wav2Lip.git
         cd Wav2Lip
         pip install -r requirements.txt
 
-    # Step 5: Download Wav2Lip Pretrained Model
+    # Step 8: Download Wav2Lip Pretrained Model
     - name: Download Wav2Lip Model
       run: |
         mkdir -p Wav2Lip/checkpoints
         wget -O Wav2Lip/checkpoints/wav2lip_gan.pth https://storage.googleapis.com/wav2lip/models/wav2lip_gan.pth
 
-    # Step 6: Run your script
+    # Step 9: Run your script
     - name: Run podcast simulation
       run: python script_name.py  # Replace with your actual script name
-
 
     - name: Configure Git
       run: |
