@@ -25,6 +25,7 @@ jobs:
         pip install transformers pyttsx3
         sudo apt update
         sudo apt install espeak-ng
+        sudo apt install ffmpeg
         pip install -r requirements.txt  # Assuming requirements.txt includes Wav2Lip dependencies
 
     - name: Run podcast simulation
