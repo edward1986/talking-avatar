@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.8"
+        python-version: "3.9"
 
     # Step 3: Upgrade pip, setuptools, and wheel
     - name: Upgrade pip, setuptools, and wheel
@@ -32,18 +32,14 @@ jobs:
         sudo apt update
         sudo apt install -y build-essential python3-dev ffmpeg espeak-ng
 
-    # Step 5: Install PyTorch
-    - name: Install PyTorch
+    # Step 5: Install Python dependencies
+    - name: Install Python dependencies
       run: |
-        pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-
-    # Step 6: Install dependencies with precompiled wheels
-    - name: Install dependencies
-      run: |
+        pip install librosa
         pip install numpy --only-binary=:all:
         pip install -r requirements.txt
 
-    # Step 7: Clone Wav2Lip Repository
+    # Step 6: Clone Wav2Lip Repository
     - name: Clone Wav2Lip
       run: |
         git clone https://github.com/justinjohn0306/Wav2Lip
@@ -54,17 +50,18 @@ jobs:
         wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth' -O 'checkpoints/mobilenet.pth'
         pip install https://raw.githubusercontent.com/AwaleSajil/ghc/master/ghc-1.0-py3-none-any.whl
         pip install git+https://github.com/elliottzheng/batch-face.git@master
-        pip install ffmpeg-python mediapipe
+        pip install ffmpeg-python
 
-    # Step 8: Download Wav2Lip Pretrained Model
-    - name: Download Wav2Lip Model
+    # Step 7: Test Wav2Lip Inference
+    - name: Test Wav2Lip Inference
       run: |
-        mkdir -p Wav2Lip/checkpoints
-        wget -O Wav2Lip/checkpoints/wav2lip_gan.pth https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth
+        cd Wav2Lip
+        python inference.py --checkpoint_path checkpoints/wav2lip_gan.pth \
+        --face test_image.jpg --audio test_audio.mp3 --outfile output_talking_head.mp4
 
-    # Step 9: Run your script
+    # Step 8: Run your script
     - name: Run podcast simulation
-      run: python script_name.py  # Replace with your actual script name
+      run: python script_name.py 
 
     # Step 10: Configure Git
     - name: Configure Git
