@@ -62,6 +62,21 @@ def combine_audio_video(video_file, audio_file, output_file):
     command = f"ffmpeg -i {video_file} -i {audio_file} -c:v copy -c:a aac {output_file}"
     subprocess.run(command, shell=True, check=True)
     print(f"Output saved to {output_file}")
+def combine_all_videos(turn, video_files, audio_files, roles):
+    """
+    Combines videos and audio for all roles in a single step.
+
+    Args:
+        turn (int): The current turn of the simulation.
+        video_files (dict): A dictionary with role keys and their corresponding video file paths.
+        audio_files (dict): A dictionary with role keys and their corresponding audio file paths.
+        roles (list): A list of role identifiers (e.g., ["host_a", "host_b", "guest_ai"]).
+    """
+    for role in roles:
+        video_file = video_files[role]
+        audio_file = audio_files[role]
+        output_file = f"final_{role}_{turn}.mp4"
+        combine_audio_video(video_file, audio_file, output_file)
 
 def podcast_simulation():
     check_files_exist()
