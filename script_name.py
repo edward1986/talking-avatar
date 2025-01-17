@@ -91,7 +91,7 @@ def combine_all_videos_to_one(output_file, video_files):
 def podcast_simulation():
     check_files_exist()
 
-    roles = ["host_a", "host_b", "guest_ai"]
+    roles = ["host_a", "host_b", "guest"]
     static_responses = STATIC_RESPONSES
     all_videos = []
 
