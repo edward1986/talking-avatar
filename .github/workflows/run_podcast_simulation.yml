@@ -46,8 +46,15 @@ jobs:
     # Step 7: Clone Wav2Lip Repository
     - name: Clone Wav2Lip
       run: |
-        git clone https://github.com/Rudrabha/Wav2Lip.git
+        git clone https://github.com/justinjohn0306/Wav2Lip
         cd Wav2Lip
+        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip.pth' -O 'checkpoints/wav2lip.pth'
+        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/wav2lip_gan.pth' -O 'checkpoints/wav2lip_gan.pth'
+        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/resnet50.pth' -O 'checkpoints/resnet50.pth'
+        wget 'https://github.com/justinjohn0306/Wav2Lip/releases/download/models/mobilenet.pth' -O 'checkpoints/mobilenet.pth'
+        a = !pip install https://raw.githubusercontent.com/AwaleSajil/ghc/master/ghc-1.0-py3-none-any.whl
+        pip install git+https://github.com/elliottzheng/batch-face.git@master
+        pip install ffmpeg-python mediapipe==0.10.18
 
     # Step 8: Download Wav2Lip Pretrained Model
     - name: Download Wav2Lip Model
