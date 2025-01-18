@@ -40,6 +40,10 @@ jobs:
         pip install numba llvmlite --only-binary=:all:
         pip install -r requirements.txt
 
+    - name: Install Ollama
+      run: |
+        curl -fsSL https://ollama.com/install.sh | sh
+
     # Step 6: Install batch_face
     - name: Install batch_face
       run: pip install git+https://github.com/elliottzheng/batch-face.git
