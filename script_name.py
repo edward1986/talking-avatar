@@ -2,6 +2,24 @@ import subprocess
 import os
 import pyttsx3
 
+def generate_content(prompt):
+    """
+    Generate content dynamically using a language model.
+    Args:
+        prompt (str): The input prompt for content generation.
+    Returns:
+        str: The generated response.
+    """
+    result = subprocess.run(
+        ["ollama", "run", "llama3", prompt],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+    if result.returncode != 0:
+        raise Exception(f"Error generating content: {result.stderr.strip()}")
+    return result.stdout.strip()
+
 # Constants for required files
 REQUIRED_FILES = [
     "Wav2Lip/checkpoints/wav2lip_gan.pth",
@@ -13,38 +31,36 @@ REQUIRED_FILES = [
 
 TURN_LIMIT = 3  # Number of conversation turns
 
-# Static responses for each role
-STATIC_RESPONSES = {
-    "host_a": [
-        "Welcome to our podcast! Today, we'll discuss the future of artificial intelligence.",
-        "Artificial intelligence is transforming industries rapidly. What are your thoughts, co-host?",
-        "Thanks for sharing your insights, guest! Let's dive deeper into AI ethics and regulation.",
-    ],
-    "host_b": [
-        "That's a great question! AI is everywhere, but is it making life better or worse?",
-        "I think AI is impressive, but sometimes it feels like it's taking over. Guest, what do you think?",
-        "Ethics is a tricky topic. Do we trust AI to make fair decisions, or do humans need to stay in control?",
-    ],
-    "guest": [
-        "AI has immense potential to improve lives, but we must be cautious about biases and misuse.",
-        "AI is a tool. It amplifies human abilities, but we need to be mindful of how we use it.",
-        "Regulating AI is essential. We need clear guidelines to ensure it benefits everyone without causing harm.",
-    ],
-}
-
 def check_files_exist():
+    """
+    Ensure all required files are present before execution.
+    """
     for file in REQUIRED_FILES:
         if not os.path.exists(file):
             raise FileNotFoundError(f"Required file not found: {file}")
     print("All required files are available.")
 
 def text_to_speech(text, filename):
+    """
+    Convert text to speech and save it as an audio file.
+    Args:
+        text (str): Text to convert.
+        filename (str): Name of the output audio file.
+    """
     engine = pyttsx3.init()
     engine.save_to_file(text, filename)
     engine.runAndWait()
     print(f"Saved audio to {filename}")
 
 def create_talking_head(audio_file, image_file):
+    """
+    Create a talking head video using Wav2Lip.
+    Args:
+        audio_file (str): Path to the input audio file.
+        image_file (str): Path to the input image file.
+    Returns:
+        str: Path to the output video file.
+    """
     video_output = f"{os.path.splitext(audio_file)[0]}_video.mp4"
     command = (
         f"python Wav2Lip/inference.py --checkpoint_path Wav2Lip/checkpoints/wav2lip_gan.pth "
@@ -54,54 +70,49 @@ def create_talking_head(audio_file, image_file):
         subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
         print(f"Generated video: {video_output}")
     except subprocess.CalledProcessError as e:
-        print(f"Error generating video:\nCommand: {e.cmd}\nReturn Code: {e.returncode}\nOutput: {e.stderr}")
+        print(f"Error generating video:\n{e.stderr}")
         raise
     return video_output
 
-def combine_audio_video(video_file, audio_file, output_file):
-    command = f"ffmpeg -i {video_file} -i {audio_file} -c:v copy -c:a aac {output_file}"
-    subprocess.run(command, shell=True, check=True)
-    print(f"Output saved to {output_file}")
 def combine_all_videos_to_one(output_file, video_files):
     """
-    Combines all video files into a single output video.
-    
+    Combine all video files into a single output video.
     Args:
-        output_file (str): The name of the final combined video file.
+        output_file (str): Name of the final combined video file.
         video_files (list): List of video file paths to combine.
     """
-    # Create a temporary file to list all video files
     list_file = "video_list.txt"
     with open(list_file, "w") as f:
         for video in video_files:
             f.write(f"file '{video}'\n")
     
-    # Use FFmpeg to concatenate videos
     command = f"ffmpeg -f concat -safe 0 -i {list_file} -c copy {output_file}"
     try:
         subprocess.run(command, shell=True, check=True)
         print(f"Final combined video saved as: {output_file}")
     except subprocess.CalledProcessError as e:
-        print(f"Error combining videos:\nCommand: {e.cmd}\nReturn Code: {e.returncode}\nOutput: {e.stderr}")
+        print(f"Error combining videos:\n{e.stderr}")
         raise
     finally:
-        # Clean up the temporary list file
         os.remove(list_file)
 
 def podcast_simulation():
+    """
+    Simulate a podcast by dynamically generating responses and creating videos.
+    """
     check_files_exist()
 
     roles = ["host_a", "host_b", "guest"]
-    static_responses = STATIC_RESPONSES
     all_videos = []
 
     for turn in range(TURN_LIMIT):
         video_files = {}
-        audio_files = {}
 
         for role in roles:
-            response = static_responses[role][turn]
+            prompt = f"Role: {role}, Turn: {turn}, Topic: AI"
+            response = generate_content(prompt)
             print(f"{role.capitalize()}: {response}")
+
             audio_file = f"response_{role}_{turn}.mp3"
             video_file = f"response_{role}_{turn}_video.mp4"
 
@@ -109,9 +120,8 @@ def podcast_simulation():
             video_file = create_talking_head(audio_file, f"{role}_avatar.png")
 
             video_files[role] = video_file
-            audio_files[role] = audio_file
 
-        # Add all individual videos for this turn to the master list
+        # Add individual videos for this turn to the master list
         all_videos.extend(video_files.values())
 
     # Combine all videos into a final output video
