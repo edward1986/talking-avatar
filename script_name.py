@@ -2,6 +2,7 @@ import subprocess
 import os
 import uuid
 import pyttsx3
+
 def generate_content(prompt):
     """
     Generate content dynamically using a language model.
@@ -29,7 +30,7 @@ REQUIRED_FILES = [
     "guest_avatar.png",
 ]
 
-TURN_LIMIT = 3  # Number of conversation turns
+TURN_LIMIT = 3  # Number of conversation turns per podcast simulation
 
 def check_files_exist():
     """
@@ -98,7 +99,8 @@ def combine_all_videos_to_one(output_file, video_files):
 
 def podcast_simulation():
     """
-    Simulate a podcast by dynamically generating responses and creating videos.
+    Simulate a podcast by dynamically generating responses, converting them to audio,
+    and creating lip-synced videos.
     """
     check_files_exist()
 
@@ -109,14 +111,16 @@ def podcast_simulation():
         video_files = {}
 
         for role in roles:
-            prompt = f"Role: {role}, Turn: {turn}, Topic: AI"
+            prompt = f"Role: {role}, Turn: {turn}, Provide a detailed discussion on AI advancements and challenges."
             response = generate_content(prompt)
             print(f"{role.capitalize()}: {response}")
 
             audio_file = f"response_{role}_{turn}.mp3"
             video_file = f"response_{role}_{turn}_video.mp4"
 
+            # Convert dynamically generated text to speech
             text_to_speech(response, audio_file)
+            # Create video using generated audio and avatar
             video_file = create_talking_head(audio_file, f"{role}_avatar.png")
 
             video_files[role] = video_file
@@ -124,11 +128,12 @@ def podcast_simulation():
         # Add individual videos for this turn to the master list
         all_videos.extend(video_files.values())
 
-    # Combine all videos into a final output video
+    # Generate a unique file name for the final output
     guid = str(uuid.uuid4())
-    combine_all_videos_to_one( guid + "final_output.mp4", all_videos)
+    final_output_file = f"{guid}_final_output.mp4"
+    combine_all_videos_to_one(final_output_file, all_videos)
 
-    print("Podcast simulation complete with visuals and speech!")
+    print(f"Podcast simulation complete. Final video saved as: {final_output_file}")
 
 if __name__ == "__main__":
     podcast_simulation()
