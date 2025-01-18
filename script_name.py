@@ -1,7 +1,6 @@
 import subprocess
 import os
 import pyttsx3
-
 def generate_content(prompt):
     """
     Generate content dynamically using a language model.
