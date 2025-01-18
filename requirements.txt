@@ -1,5 +1,5 @@
 transformers
-pyttsx3
+gtts
 torch
 numpy
 numba>=0.56
