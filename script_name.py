@@ -1,5 +1,6 @@
 import subprocess
 import os
+import uuid
 import pyttsx3
 def generate_content(prompt):
     """
@@ -124,7 +125,8 @@ def podcast_simulation():
         all_videos.extend(video_files.values())
 
     # Combine all videos into a final output video
-    combine_all_videos_to_one("final_output.mp4", all_videos)
+    guid = str(uuid.uuid4())
+    combine_all_videos_to_one( guid + "final_output.mp4", all_videos)
 
     print("Podcast simulation complete with visuals and speech!")
 
